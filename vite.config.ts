@@ -23,4 +23,21 @@ export default defineConfig({
     port: 3000,
   },
   base: '/motiv',
+
+  // ✅ Add this block to fix the warning
+  build: {
+    chunkSizeWarningLimit: 1500, // increase bundle size warning limit (in KB)
+    // Optional: optimize build output
+    minify: 'esbuild',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        },
+      },
+    },
+  },
 });
